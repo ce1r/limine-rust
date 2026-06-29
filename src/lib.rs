@@ -1,15 +1,15 @@
 #![no_std]
 
-pub const COMMON_MAGIC: [u64; 2] = [0xc7b1dd30df4c8b88, 0x0a82e883a194f07b];
-pub const CURRENT_BASE_REVISION: u64 = 6;
-
 pub mod firmware_type;
-
 mod request;
+pub mod rsdp;
 
 pub use request::RequestHeader;
 pub use request::RequestsEndMarker;
 pub use request::RequestsStartMarker;
+
+pub const COMMON_MAGIC: [u64; 2] = [0xc7b1dd30df4c8b88, 0x0a82e883a194f07b];
+pub const CURRENT_BASE_REVISION: u64 = 6;
 
 #[repr(C)]
 pub struct BaseRevision {

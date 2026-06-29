@@ -1,8 +1,7 @@
-use core::cell::UnsafeCell;
-use core::ptr::null_mut;
-
 use crate::COMMON_MAGIC;
 use crate::CURRENT_BASE_REVISION;
+use core::cell::UnsafeCell;
+use core::ptr::null_mut;
 
 #[repr(C)]
 pub struct RequestsStartMarker([u64; 4]);
