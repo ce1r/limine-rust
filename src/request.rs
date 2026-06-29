@@ -1,3 +1,9 @@
+use core::cell::UnsafeCell;
+use core::ptr::null_mut;
+
+use crate::COMMON_MAGIC;
+use crate::CURRENT_BASE_REVISION;
+
 #[repr(C)]
 pub struct RequestsStartMarker([u64; 4]);
 
@@ -24,5 +30,34 @@ unsafe impl Sync for RequestsEndMarker {}
 impl RequestsEndMarker {
     pub const fn new() -> Self {
         Self([0xadc0e0531bb10d03, 0x9572709f31764c62])
+    }
+}
+
+#[repr(C, align(8))]
+pub struct RequestHeader {
+    pub magic: [u64; 2],
+    pub id: [u64; 2],
+    pub revision: u64,
+    pub response: UnsafeCell<*mut ()>,
+}
+
+impl RequestHeader {
+    pub const fn new(id: [u64; 2]) -> Self {
+        Self {
+            magic: COMMON_MAGIC,
+            id,
+            revision: CURRENT_BASE_REVISION,
+            response: UnsafeCell::new(null_mut()),
+        }
+    }
+
+    pub fn response<T>(&self) -> Option<&'static T> {
+        let ptr = unsafe { self.response.get().read_volatile() };
+
+        if ptr.is_null() {
+            None
+        } else {
+            unsafe { Some(&*(ptr as *const T)) }
+        }
     }
 }
