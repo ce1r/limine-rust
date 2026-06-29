@@ -56,7 +56,7 @@ pub struct Entry {
 impl MemoryMapResponse {
     pub fn entries(&self) -> &[&Entry] {
         unsafe {
-            core::slice::from_raw_parts(self.entries as *const &Entry, self.entry_count as usize)
+            core::slice::from_raw_parts(self.entries.cast::<&Entry>(), self.entry_count as usize)
         }
     }
 }

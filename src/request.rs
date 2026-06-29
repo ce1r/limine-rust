@@ -40,6 +40,9 @@ pub struct RequestHeader<T> {
     pub response: UnsafeCell<*mut T>,
 }
 
+unsafe impl<T> Send for RequestHeader<T> {}
+unsafe impl<T> Sync for RequestHeader<T> {}
+
 impl<T> RequestHeader<T> {
     pub const fn new(id: [u64; 2]) -> Self {
         Self {
@@ -56,7 +59,7 @@ impl<T> RequestHeader<T> {
         if ptr.is_null() {
             None
         } else {
-            unsafe { Some(&*(ptr as *const T)) }
+            unsafe { Some(&*(ptr.cast_const())) }
         }
     }
 }

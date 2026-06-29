@@ -1,4 +1,5 @@
 use crate::RequestHeader;
+use core::ffi::c_void;
 
 #[repr(C, align(8))]
 pub struct RsdpRequest {
@@ -24,7 +25,7 @@ impl RsdpRequest {
 #[repr(C)]
 pub struct RsdpResponse {
     revision: u64,
-    pub address: *mut (),
+    pub address: *mut c_void,
 }
 
 unsafe impl Send for RsdpResponse {}

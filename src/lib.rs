@@ -6,6 +6,7 @@ pub mod executable_address;
 pub mod executable_file;
 pub mod file;
 pub mod firmware_type;
+pub mod framebuffer;
 pub mod hhdm;
 pub mod memory_map;
 pub mod mp;

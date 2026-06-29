@@ -1,4 +1,5 @@
 use core::ffi::c_char;
+use core::ffi::c_void;
 
 #[repr(u32)]
 #[derive(Debug, Clone, Copy)]
@@ -21,7 +22,7 @@ pub struct Uuid {
 #[derive(Debug, Clone, Copy)]
 pub struct File {
     revision: u64,
-    address: *mut (),
+    address: *mut c_void,
     size: u64,
     path: *const c_char,
     string: *const c_char,
