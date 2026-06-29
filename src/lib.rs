@@ -6,6 +6,7 @@ pub mod mp;
 mod request;
 pub mod rsdp;
 pub mod smbios;
+pub mod stack_size;
 
 pub use request::RequestHeader;
 pub use request::RequestsEndMarker;
