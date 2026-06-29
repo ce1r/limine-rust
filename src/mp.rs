@@ -4,7 +4,7 @@ use core::sync::atomic::AtomicU64;
 
 #[repr(C, align(8))]
 pub struct MpRequest {
-    header: RequestHeader,
+    header: RequestHeader<MpResponse>,
     flags: u64,
 }
 

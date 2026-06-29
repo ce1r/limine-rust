@@ -33,14 +33,14 @@ impl RequestsEndMarker {
 }
 
 #[repr(C, align(8))]
-pub struct RequestHeader {
+pub struct RequestHeader<T> {
     pub magic: [u64; 2],
     pub id: [u64; 2],
     pub revision: u64,
-    pub response: UnsafeCell<*mut ()>,
+    pub response: UnsafeCell<*mut T>,
 }
 
-impl RequestHeader {
+impl<T> RequestHeader<T> {
     pub const fn new(id: [u64; 2]) -> Self {
         Self {
             magic: COMMON_MAGIC,
@@ -50,7 +50,7 @@ impl RequestHeader {
         }
     }
 
-    pub fn response<T>(&self) -> Option<&'static T> {
+    pub fn response(&self) -> Option<&'static T> {
         let ptr = unsafe { self.response.get().read_volatile() };
 
         if ptr.is_null() {

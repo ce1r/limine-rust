@@ -2,7 +2,7 @@ use crate::RequestHeader;
 
 #[repr(C, align(8))]
 pub struct RsdpRequest {
-    header: RequestHeader,
+    header: RequestHeader<RsdpResponse>,
 }
 
 unsafe impl Send for RsdpRequest {}

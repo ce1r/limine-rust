@@ -11,7 +11,7 @@ pub enum FirmwareType {
 
 #[repr(C, align(8))]
 pub struct FirmwareTypeRequest {
-    header: RequestHeader,
+    header: RequestHeader<FirmwareTypeResponse>,
 }
 
 unsafe impl Send for FirmwareTypeRequest {}
