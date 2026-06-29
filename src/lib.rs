@@ -16,6 +16,7 @@ mod request;
 pub mod rsdp;
 pub mod smbios;
 pub mod stack_size;
+pub mod tsc_frequency;
 
 pub use request::RequestHeader;
 pub use request::RequestsEndMarker;
