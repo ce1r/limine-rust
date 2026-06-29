@@ -21,8 +21,8 @@ impl RsdpRequest {
     }
 }
 
-#[derive(Debug)]
 #[repr(C)]
+#[derive(Debug)]
 pub struct RsdpResponse {
     revision: u64,
     pub address: *mut c_void,

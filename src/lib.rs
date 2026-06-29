@@ -9,6 +9,7 @@ pub mod file;
 pub mod firmware_type;
 pub mod framebuffer;
 pub mod hhdm;
+pub mod keep_iommu;
 pub mod memory_map;
 pub mod mp;
 mod request;
