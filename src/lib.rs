@@ -1,5 +1,6 @@
 #![no_std]
 
+pub mod bootloader_info;
 pub mod date_at_boot;
 pub mod efi_system_table;
 pub mod executable_address;
