@@ -1,6 +1,7 @@
 #![no_std]
 
 pub mod firmware_type;
+pub mod hhdm;
 pub mod memory_map;
 pub mod mp;
 mod request;
