@@ -5,6 +5,7 @@ pub mod memory_map;
 pub mod mp;
 mod request;
 pub mod rsdp;
+pub mod smbios;
 
 pub use request::RequestHeader;
 pub use request::RequestsEndMarker;
