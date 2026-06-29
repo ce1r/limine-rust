@@ -5,6 +5,7 @@ pub mod bootloader_performance;
 pub mod date_at_boot;
 pub mod efi_system_table;
 pub mod executable_address;
+pub mod executable_cmdline;
 pub mod executable_file;
 pub mod file;
 pub mod firmware_type;
