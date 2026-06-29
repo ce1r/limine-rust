@@ -1,12 +1,12 @@
 use core::ffi::c_char;
 use core::ffi::c_void;
 
-#[repr(u32)]
 #[derive(Debug, Clone, Copy)]
 pub enum MediaType {
-    Generic = 0,
-    Optical = 1,
-    TFTP = 2,
+    Generic,
+    Optical,
+    TFTP,
+    Unknown,
 }
 
 #[repr(C)]
@@ -26,7 +26,7 @@ pub struct File {
     size: u64,
     path: *const c_char,
     string: *const c_char,
-    pub media_type: MediaType,
+    media_type: u32,
     _unused: u32,
     pub tftp_ipv4: [u8; 4],
     pub tftp_port: u32,
@@ -35,4 +35,15 @@ pub struct File {
     pub gpt_disk_uuid: Uuid,
     pub gpt_part_uuid: Uuid,
     pub part_uuid: Uuid,
+}
+
+impl File {
+    pub fn media_type(&self) -> MediaType {
+        match self.media_type {
+            0 => MediaType::Generic,
+            1 => MediaType::Optical,
+            2 => MediaType::TFTP,
+            _ => MediaType::Unknown,
+        }
+    }
 }

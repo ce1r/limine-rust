@@ -43,10 +43,10 @@ impl FramebufferResponse {
     }
 }
 
-#[repr(u8)]
 #[derive(Debug)]
 pub enum MemoryModel {
-    RGB = 1,
+    RGB,
+    Unknown,
 }
 
 #[repr(C)]
@@ -57,7 +57,7 @@ pub struct Framebuffer {
     pub height: u64,
     pub pitch: u64,
     pub bpp: u16,
-    pub memory_model: MemoryModel,
+    pub memory_model: u8,
     pub red_mask_size: u8,
     pub red_mask_shift: u8,
     pub green_mask_size: u8,
@@ -80,6 +80,13 @@ impl Framebuffer {
 
     pub fn size(&self) -> usize {
         (self.height * self.pitch) as usize
+    }
+
+    pub fn memory_model(&self) -> MemoryModel {
+        match self.memory_model {
+            1 => MemoryModel::RGB,
+            _ => MemoryModel::Unknown,
+        }
     }
 
     pub fn edid(&self) -> &[u8] {

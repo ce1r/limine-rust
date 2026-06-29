@@ -1,17 +1,17 @@
 use crate::RequestHeader;
 
-#[repr(u64)]
 #[derive(Debug)]
 pub enum EntryType {
-    Usable = 0,
-    Reserved = 1,
-    AcpiReclaimable = 2,
-    AcpiNVS = 3,
-    BadMemory = 4,
-    BootloaderReclaimable = 5,
-    ExecutableAndModules = 6,
-    Framebuffer = 7,
-    ReservedMapped = 8,
+    Usable,
+    Reserved,
+    AcpiReclaimable,
+    AcpiNVS,
+    BadMemory,
+    BootloaderReclaimable,
+    ExecutableAndModules,
+    Framebuffer,
+    ReservedMapped,
+    Unknown,
 }
 
 #[repr(C, align(8))]
@@ -45,18 +45,35 @@ pub struct MemoryMapResponse {
 unsafe impl Send for MemoryMapResponse {}
 unsafe impl Sync for MemoryMapResponse {}
 
+impl MemoryMapResponse {
+    pub fn entries(&self) -> &[&Entry] {
+        unsafe {
+            core::slice::from_raw_parts(self.entries.cast::<&Entry>(), self.entry_count as usize)
+        }
+    }
+}
+
 #[repr(C)]
 #[derive(Debug)]
 pub struct Entry {
     pub base: u64,
     pub length: u64,
-    pub entry_type: EntryType,
+    pub entry_type: u64,
 }
 
-impl MemoryMapResponse {
-    pub fn entries(&self) -> &[&Entry] {
-        unsafe {
-            core::slice::from_raw_parts(self.entries.cast::<&Entry>(), self.entry_count as usize)
+impl Entry {
+    pub fn entry_type(&self) -> EntryType {
+        match self.entry_type {
+            0 => EntryType::Usable,
+            1 => EntryType::Reserved,
+            2 => EntryType::AcpiReclaimable,
+            3 => EntryType::AcpiNVS,
+            4 => EntryType::BadMemory,
+            5 => EntryType::BootloaderReclaimable,
+            6 => EntryType::ExecutableAndModules,
+            7 => EntryType::Framebuffer,
+            8 => EntryType::ReservedMapped,
+            _ => EntryType::Unknown,
         }
     }
 }
