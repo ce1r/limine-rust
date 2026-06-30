@@ -1,4 +1,4 @@
-use crate::RequestHeader;
+use crate::request::RequestHeader;
 
 #[derive(Debug)]
 pub enum FirmwareType {

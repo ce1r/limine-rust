@@ -3,6 +3,28 @@ use crate::CURRENT_BASE_REVISION;
 use core::cell::UnsafeCell;
 use core::ptr::null_mut;
 
+pub use crate::bootloader_info::BootloaderInfoRequest;
+pub use crate::bootloader_performance::BootloaderPerformanceRequest;
+pub use crate::date_at_boot::DateAtBootRequest;
+pub use crate::efi_memory_map::EfiMemoryMapRequest;
+pub use crate::efi_system_table::EfiSystemTableRequest;
+pub use crate::entry_point::EntryPointRequest;
+pub use crate::executable_address::ExecutableAddressRequest;
+pub use crate::executable_cmdline::ExecutableCmdlineRequest;
+pub use crate::executable_file::ExecutableFileRequest;
+pub use crate::firmware_type::FirmwareTypeRequest;
+pub use crate::flanterm::FlantermParamsRequest;
+pub use crate::framebuffer::FramebufferRequest;
+pub use crate::hhdm::HhdmRequest;
+pub use crate::keep_iommu::KeepIommuRequest;
+pub use crate::memory_map::MemoryMapRequest;
+pub use crate::mp::MpRequest;
+pub use crate::paging_mode::PagingModeRequest;
+pub use crate::rsdp::RsdpRequest;
+pub use crate::smbios::SmbiosRequest;
+pub use crate::stack_size::StackSizeRequest;
+pub use crate::tsc_frequency::TscFrequencyRequest;
+
 #[repr(C)]
 pub struct RequestsStartMarker([u64; 4]);
 

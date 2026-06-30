@@ -1,4 +1,4 @@
-use crate::RequestHeader;
+use crate::request::RequestHeader;
 use core::sync::atomic::AtomicPtr;
 use core::sync::atomic::AtomicU64;
 

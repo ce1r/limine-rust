@@ -1,4 +1,4 @@
-use crate::RequestHeader;
+use crate::request::RequestHeader;
 use core::ffi::c_void;
 
 #[repr(C, align(8))]
