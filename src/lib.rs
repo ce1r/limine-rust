@@ -9,6 +9,7 @@ pub mod executable_cmdline;
 pub mod executable_file;
 pub mod file;
 pub mod firmware_type;
+pub mod flanterm;
 pub mod framebuffer;
 pub mod hhdm;
 pub mod keep_iommu;
