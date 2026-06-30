@@ -3,6 +3,7 @@
 pub mod bootloader_info;
 pub mod bootloader_performance;
 pub mod date_at_boot;
+pub mod efi_memory_map;
 pub mod efi_system_table;
 pub mod entry_point;
 pub mod executable_address;
