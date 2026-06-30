@@ -14,6 +14,7 @@ pub mod hhdm;
 pub mod keep_iommu;
 pub mod memory_map;
 pub mod mp;
+pub mod paging_mode;
 mod request;
 pub mod rsdp;
 pub mod smbios;

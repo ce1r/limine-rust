@@ -24,7 +24,7 @@ impl HhdmRequest {
 #[derive(Debug)]
 pub struct HhdmResponse {
     revision: u64,
-    offset: u64,
+    pub offset: u64,
 }
 
 unsafe impl Send for HhdmResponse {}

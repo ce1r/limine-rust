@@ -1,6 +1,6 @@
 use crate::RequestHeader;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum EntryType {
     Usable,
     Reserved,
