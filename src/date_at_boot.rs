@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`DateAtBootResponse`].
 #[repr(C, align(8))]
 pub struct DateAtBootRequest {
     header: RequestHeader<DateAtBootResponse>,
@@ -20,6 +21,7 @@ impl DateAtBootRequest {
     }
 }
 
+/// Returned by [`DateAtBootRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct DateAtBootResponse {

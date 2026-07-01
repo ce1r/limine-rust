@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 use core::ffi::CStr;
 use core::ffi::c_char;
 
+/// Returns a [`ExecutableCmdlineResponse`].
 #[repr(C, align(8))]
 pub struct ExecutableCmdlineRequest {
     header: RequestHeader<ExecutableCmdlineResponse>,
@@ -22,6 +23,7 @@ impl ExecutableCmdlineRequest {
     }
 }
 
+/// Returned by [`ExecutableCmdlineRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct ExecutableCmdlineResponse {

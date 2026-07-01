@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`TscFrequencyResponse`].
 #[repr(C, align(8))]
 pub struct TscFrequencyRequest {
     header: RequestHeader<TscFrequencyResponse>,
@@ -20,6 +21,7 @@ impl TscFrequencyRequest {
     }
 }
 
+/// Returned by [`TscFrequencyRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct TscFrequencyResponse {

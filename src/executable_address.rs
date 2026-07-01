@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`ExecutableAddressResponse`].
 #[repr(C, align(8))]
 pub struct ExecutableAddressRequest {
     header: RequestHeader<ExecutableAddressResponse>,
@@ -20,6 +21,7 @@ impl ExecutableAddressRequest {
     }
 }
 
+/// Returned by [`ExecutableAddressRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct ExecutableAddressResponse {

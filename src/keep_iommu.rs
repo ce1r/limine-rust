@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`KeepIommuResponse`].
 #[repr(C, align(8))]
 pub struct KeepIommuRequest {
     header: RequestHeader<KeepIommuResponse>,
@@ -20,6 +21,7 @@ impl KeepIommuRequest {
     }
 }
 
+/// Returned by [`KeepIommuRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct KeepIommuResponse {

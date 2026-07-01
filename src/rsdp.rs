@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::ffi::c_void;
 
+/// Returns a [`RsdpResponse`].
 #[repr(C, align(8))]
 pub struct RsdpRequest {
     header: RequestHeader<RsdpResponse>,
@@ -21,6 +22,7 @@ impl RsdpRequest {
     }
 }
 
+/// Returned by [`RsdpRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct RsdpResponse {

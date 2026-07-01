@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::num::NonZeroUsize;
 
+/// Returns a [`SmbiosResponse`].
 #[repr(C, align(8))]
 pub struct SmbiosRequest {
     header: RequestHeader<SmbiosResponse>,
@@ -21,6 +22,7 @@ impl SmbiosRequest {
     }
 }
 
+/// Returned by [`SmbiosRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct SmbiosResponse {

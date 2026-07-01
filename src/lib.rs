@@ -34,12 +34,15 @@ pub use flanterm::ParamEntry;
 pub use flanterm::Rotation;
 pub use framebuffer::Framebuffer;
 pub use framebuffer::VideoMode;
-pub use memory_map::Entry;
-pub use memory_map::EntryType;
+pub use memory_map::MemoryRegion;
+pub use memory_map::MemoryType;
 pub use mp::Cpu;
 pub use paging_mode::PagingMode;
 
+/// The first 2 magic numbers common to every request.
 pub const COMMON_MAGIC: [u64; 2] = [0xc7b1dd30df4c8b88, 0x0a82e883a194f07b];
+
+/// The currently supported base revision (6).
 pub const CURRENT_BASE_REVISION: u64 = 6;
 
 #[repr(C)]

@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`BootloaderPerformanceResponse`].
 #[repr(C, align(8))]
 pub struct BootloaderPerformanceRequest {
     header: RequestHeader<BootloaderPerformanceResponse>,
@@ -20,6 +21,7 @@ impl BootloaderPerformanceRequest {
     }
 }
 
+/// Returned by [`BootloaderPerformanceRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct BootloaderPerformanceResponse {

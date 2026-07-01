@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::ffi::c_void;
 
+/// Returns a [`FramebufferResponse`].
 #[repr(C, align(8))]
 pub struct FramebufferRequest {
     header: RequestHeader<FramebufferResponse>,
@@ -21,6 +22,7 @@ impl FramebufferRequest {
     }
 }
 
+/// Returned by [`FramebufferRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct FramebufferResponse {
@@ -73,9 +75,7 @@ pub struct Framebuffer {
 
 impl Framebuffer {
     pub fn modes(&self) -> &[&VideoMode] {
-        unsafe {
-            core::slice::from_raw_parts(self.modes.cast::<&VideoMode>(), self.mode_count as usize)
-        }
+        unsafe { core::slice::from_raw_parts(self.modes.cast(), self.mode_count as usize) }
     }
 
     pub fn size(&self) -> usize {

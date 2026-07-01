@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`HhdmResponse`].
 #[repr(C, align(8))]
 pub struct HhdmRequest {
     header: RequestHeader<HhdmResponse>,
@@ -20,6 +21,7 @@ impl HhdmRequest {
     }
 }
 
+/// Returned by [`HhdmRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct HhdmResponse {

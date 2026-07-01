@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::ffi::c_void;
 
+/// Returns a [`EfiSystemTableResponse`].
 #[repr(C, align(8))]
 pub struct EfiSystemTableRequest {
     header: RequestHeader<EfiSystemTableResponse>,
@@ -21,11 +22,12 @@ impl EfiSystemTableRequest {
     }
 }
 
+/// Returned by [`EfiSystemTableRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct EfiSystemTableResponse {
     revision: u64,
-    pub address: *mut c_void,
+    pub address: *const c_void,
 }
 
 unsafe impl Send for EfiSystemTableResponse {}

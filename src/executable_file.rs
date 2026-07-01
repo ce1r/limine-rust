@@ -1,6 +1,7 @@
 use crate::file::File;
 use crate::request::RequestHeader;
 
+/// Returns a [`ExecutableFileResponse`].
 #[repr(C, align(8))]
 pub struct ExecutableFileRequest {
     header: RequestHeader<ExecutableFileResponse>,
@@ -21,6 +22,7 @@ impl ExecutableFileRequest {
     }
 }
 
+/// Returned by [`ExecutableFileRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct ExecutableFileResponse {

@@ -13,6 +13,7 @@ impl PagingMode {
     pub const MAX: PagingMode = PagingMode::X86_64_5LVL;
 }
 
+/// Returns a [`PagingModeResponse`].
 #[repr(C, align(8))]
 pub struct PagingModeRequest {
     header: RequestHeader<PagingModeResponse>,
@@ -67,6 +68,7 @@ impl PagingModeRequest {
     }
 }
 
+/// Returned by [`PagingModeRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct PagingModeResponse {

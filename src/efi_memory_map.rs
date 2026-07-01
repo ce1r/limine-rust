@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::ffi::c_void;
 
+/// Returns a [`EfiMemoryMapResponse`].
 #[repr(C, align(8))]
 pub struct EfiMemoryMapRequest {
     header: RequestHeader<EfiMemoryMapResponse>,
@@ -21,6 +22,7 @@ impl EfiMemoryMapRequest {
     }
 }
 
+/// Returned by [`EfiMemoryMapRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct EfiMemoryMapResponse {

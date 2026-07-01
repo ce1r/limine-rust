@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 use core::ffi::CStr;
 use core::ffi::c_char;
 
+/// Returns a [`BootloaderInfoResponse`].
 #[repr(C, align(8))]
 pub struct BootloaderInfoRequest {
     header: RequestHeader<BootloaderInfoResponse>,
@@ -22,6 +23,7 @@ impl BootloaderInfoRequest {
     }
 }
 
+/// Returned by [`BootloaderInfoRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct BootloaderInfoResponse {

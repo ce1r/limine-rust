@@ -1,5 +1,6 @@
 use crate::request::RequestHeader;
 
+/// Returns a [`StackSizeResponse`].
 #[repr(C, align(8))]
 pub struct StackSizeRequest {
     header: RequestHeader<StackSizeResponse>,
@@ -22,6 +23,7 @@ impl StackSizeRequest {
     }
 }
 
+/// Returned by [`StackSizeRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct StackSizeResponse {

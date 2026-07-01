@@ -1,6 +1,7 @@
 use crate::request::RequestHeader;
 use core::ffi::c_void;
 
+/// Returns a [`FlantermParamsResponse`].
 #[repr(C, align(8))]
 pub struct FlantermParamsRequest {
     header: RequestHeader<FlantermParamsResponse>,
@@ -21,6 +22,7 @@ impl FlantermParamsRequest {
     }
 }
 
+/// Returned by [`FlantermParamsRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct FlantermParamsResponse {
@@ -53,7 +55,6 @@ pub struct ParamEntry {
     pub rotation: u64,
 }
 
-#[repr(u64)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Rotation {
     Deg0,

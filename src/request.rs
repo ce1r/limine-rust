@@ -25,6 +25,7 @@ pub use crate::smbios::SmbiosRequest;
 pub use crate::stack_size::StackSizeRequest;
 pub use crate::tsc_frequency::TscFrequencyRequest;
 
+/// Marks the beginning of requests.
 #[repr(C)]
 pub struct RequestsStartMarker([u64; 4]);
 
@@ -42,6 +43,7 @@ impl RequestsStartMarker {
     }
 }
 
+/// Marks the ending of requests.
 #[repr(C)]
 pub struct RequestsEndMarker([u64; 2]);
 
@@ -55,7 +57,7 @@ impl RequestsEndMarker {
 }
 
 #[repr(C, align(8))]
-pub struct RequestHeader<T> {
+pub(crate) struct RequestHeader<T> {
     pub magic: [u64; 2],
     pub id: [u64; 2],
     pub revision: u64,

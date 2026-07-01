@@ -1,7 +1,8 @@
 use crate::request::RequestHeader;
 
+/// The type of a memory region returned by the bootloader.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum EntryType {
+pub enum MemoryType {
     Usable,
     Reserved,
     AcpiReclaimable,
@@ -14,6 +15,7 @@ pub enum EntryType {
     Unknown,
 }
 
+/// Returns a [`MemoryMapResponse`].
 #[repr(C, align(8))]
 pub struct MemoryMapRequest {
     header: RequestHeader<MemoryMapResponse>,
@@ -34,46 +36,68 @@ impl MemoryMapRequest {
     }
 }
 
+/// Returned by [`MemoryMapRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct MemoryMapResponse {
     revision: u64,
-    entry_count: u64,
-    entries: *const *const Entry,
+    region_count: u64,
+    regions: *const *const MemoryRegion,
 }
 
 unsafe impl Send for MemoryMapResponse {}
 unsafe impl Sync for MemoryMapResponse {}
 
 impl MemoryMapResponse {
-    pub fn entries(&self) -> &[&Entry] {
-        unsafe {
-            core::slice::from_raw_parts(self.entries.cast::<&Entry>(), self.entry_count as usize)
-        }
+    /// Returns a slice of all the memory regions.
+    pub fn regions(&self) -> &[&MemoryRegion] {
+        unsafe { core::slice::from_raw_parts(self.regions.cast(), self.region_count as usize) }
     }
 }
 
+/// A region of physical memory.
 #[repr(C)]
 #[derive(Debug)]
-pub struct Entry {
-    pub base: u64,
-    pub length: u64,
-    pub entry_type: u64,
+pub struct MemoryRegion {
+    start: u64,
+    size: u64,
+    memory_type: u64,
 }
 
-impl Entry {
-    pub fn entry_type(&self) -> EntryType {
-        match self.entry_type {
-            0 => EntryType::Usable,
-            1 => EntryType::Reserved,
-            2 => EntryType::AcpiReclaimable,
-            3 => EntryType::AcpiNVS,
-            4 => EntryType::BadMemory,
-            5 => EntryType::BootloaderReclaimable,
-            6 => EntryType::ExecutableAndModules,
-            7 => EntryType::Framebuffer,
-            8 => EntryType::ReservedMapped,
-            _ => EntryType::Unknown,
+impl MemoryRegion {
+    /// Returns the starting physical address of the memory region.
+    pub fn start(&self) -> u64 {
+        self.start
+    }
+
+    /// Returns the ending physical address (exclusive) of the memory region.
+    pub fn end(&self) -> u64 {
+        self.start + self.size
+    }
+
+    /// Returns the size of the memory region in bytes.
+    pub fn size(&self) -> u64 {
+        self.size
+    }
+
+    /// Returns the [`MemoryType`] of the region.
+    pub fn memory_type(&self) -> MemoryType {
+        match self.memory_type {
+            0 => MemoryType::Usable,
+            1 => MemoryType::Reserved,
+            2 => MemoryType::AcpiReclaimable,
+            3 => MemoryType::AcpiNVS,
+            4 => MemoryType::BadMemory,
+            5 => MemoryType::BootloaderReclaimable,
+            6 => MemoryType::ExecutableAndModules,
+            7 => MemoryType::Framebuffer,
+            8 => MemoryType::ReservedMapped,
+            _ => MemoryType::Unknown,
         }
+    }
+
+    /// Returns whether the memory region is [`MemoryType::Usable`].
+    pub fn is_usable(&self) -> bool {
+        self.memory_type() == MemoryType::Usable
     }
 }

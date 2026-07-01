@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 type EntryPoint = extern "C" fn() -> !;
 
+/// Returns a [`EntryPointResponse`].
 #[repr(C, align(8))]
 pub struct EntryPointRequest {
     header: RequestHeader<EntryPointResponse>,
@@ -24,6 +25,7 @@ impl EntryPointRequest {
     }
 }
 
+/// Returned by [`EntryPointRequest`].
 #[repr(C)]
 #[derive(Debug)]
 pub struct EntryPointResponse {

@@ -9,6 +9,7 @@ pub enum FirmwareType {
     Unknown,
 }
 
+/// Returns a [`FirmwareTypeResponse`].
 #[repr(C, align(8))]
 pub struct FirmwareTypeRequest {
     header: RequestHeader<FirmwareTypeResponse>,
@@ -29,6 +30,7 @@ impl FirmwareTypeRequest {
     }
 }
 
+/// Returned by [`FirmwareTypeRequest`].
 #[derive(Debug)]
 #[repr(C)]
 pub struct FirmwareTypeResponse {
