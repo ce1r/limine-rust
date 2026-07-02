@@ -6,3 +6,16 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/ce1r/limine-rust"
 categories = ["no-std"]
+
+[workspace]
+members = ["limine-test"]
+
+[features]
+test = ["dep:bindgen"]
+
+[build-dependencies]
+bindgen = { version = "0.72.1", optional = true }
+
+[dev-dependencies]
+limine-rust = { path = ".", features = ["test"] }
+limine-test = { path = "limine-test" }

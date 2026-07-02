@@ -67,5 +67,28 @@ impl BaseRevision {
     }
 }
 
+#[cfg(test)]
+pub mod bindings {
+    #![allow(
+        non_upper_case_globals,
+        non_camel_case_types,
+        non_snake_case,
+        dead_code
+    )]
+    include!(concat!(env!("OUT_DIR"), "/limine.rs"));
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! field_size {
+    ($struct:ty, $field:ident) => {{
+        fn get_field_size<F: FnOnce(T) -> U, T, U>(_: F) -> usize {
+            core::mem::size_of::<U>()
+        }
+
+        get_field_size(|s: $struct| s.$field)
+    }};
+}
+
 #[cfg(not(target_arch = "x86_64"))]
 compile_error!("Only `x86_64` is supported");

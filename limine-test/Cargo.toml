@@ -1,0 +1,12 @@
+[package]
+name = "limine-test"
+edition = "2024"
+publish = false
+
+[lib]
+proc-macro = true
+
+[dependencies]
+limine-rust = { path = ".." }
+quote = "1.0"
+syn = { version = "2.0", features = ["full", "extra-traits"] }

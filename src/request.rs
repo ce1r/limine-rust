@@ -58,8 +58,7 @@ impl RequestsEndMarker {
 
 #[repr(C, align(8))]
 pub(crate) struct RequestHeader<T> {
-    pub magic: [u64; 2],
-    pub id: [u64; 2],
+    pub id: [u64; 4],
     pub revision: u64,
     pub response: UnsafeCell<*mut T>,
 }
@@ -70,8 +69,7 @@ unsafe impl<T> Sync for RequestHeader<T> {}
 impl<T> RequestHeader<T> {
     pub const fn new(id: [u64; 2]) -> Self {
         Self {
-            magic: COMMON_MAGIC,
-            id,
+            id: [COMMON_MAGIC[0], COMMON_MAGIC[1], id[0], id[1]],
             revision: CURRENT_BASE_REVISION,
             response: UnsafeCell::new(null_mut()),
         }
@@ -85,5 +83,35 @@ impl<T> RequestHeader<T> {
         } else {
             unsafe { Some(&*(ptr.cast_const())) }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::field_size;
+
+    #[test]
+    fn test_layout() {
+        assert_eq!(core::mem::size_of::<RequestHeader<()>>(), 48);
+        assert_eq!(core::mem::align_of::<RequestHeader<()>>(), 8);
+        assert_eq!(core::mem::offset_of!(RequestHeader<()>, id), 0);
+        assert_eq!(core::mem::offset_of!(RequestHeader<()>, revision), 32);
+        assert_eq!(core::mem::offset_of!(RequestHeader<()>, response), 40);
+
+        assert_eq!(
+            core::mem::size_of::<[u64; 4]>(),
+            field_size!(RequestHeader<()>, id)
+        );
+
+        assert_eq!(
+            core::mem::size_of::<u64>(),
+            field_size!(RequestHeader<()>, revision)
+        );
+
+        assert_eq!(
+            core::mem::size_of::<UnsafeCell<*mut ()>>(),
+            field_size!(RequestHeader<()>, response)
+        );
     }
 }
