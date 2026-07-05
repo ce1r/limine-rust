@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`KeepIommuResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_x86_64_keep_iommu_request))]
 pub struct KeepIommuRequest {
     header: RequestHeader<KeepIommuResponse>,
 }
@@ -24,6 +25,7 @@ impl KeepIommuRequest {
 /// Returned by [`KeepIommuRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_x86_64_keep_iommu_response))]
 pub struct KeepIommuResponse {
     revision: u64,
 }

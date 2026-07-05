@@ -1,8 +1,8 @@
 use crate::request::RequestHeader;
-use core::num::NonZeroUsize;
 
 /// Returns a [`SmbiosResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_smbios_request))]
 pub struct SmbiosRequest {
     header: RequestHeader<SmbiosResponse>,
 }
@@ -25,10 +25,11 @@ impl SmbiosRequest {
 /// Returned by [`SmbiosRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_smbios_response))]
 pub struct SmbiosResponse {
     revision: u64,
-    pub entry_32: Option<NonZeroUsize>,
-    pub entry_64: Option<NonZeroUsize>,
+    pub entry_32: *const u8,
+    pub entry_64: *const u8,
 }
 
 unsafe impl Send for SmbiosResponse {}

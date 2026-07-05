@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`TscFrequencyResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_tsc_frequency_request))]
 pub struct TscFrequencyRequest {
     header: RequestHeader<TscFrequencyResponse>,
 }
@@ -24,6 +25,7 @@ impl TscFrequencyRequest {
 /// Returned by [`TscFrequencyRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_tsc_frequency_response))]
 pub struct TscFrequencyResponse {
     revision: u64,
     pub frequency: u64,

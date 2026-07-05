@@ -1,20 +1,8 @@
 use crate::request::RequestHeader;
 
-#[repr(u64)]
-#[derive(Debug, Clone, Copy)]
-pub enum PagingMode {
-    X86_64_4LVL = 0,
-    X86_64_5LVL = 1,
-}
-
-impl PagingMode {
-    pub const DEFAULT: PagingMode = PagingMode::X86_64_4LVL;
-    pub const MIN: PagingMode = PagingMode::X86_64_4LVL;
-    pub const MAX: PagingMode = PagingMode::X86_64_5LVL;
-}
-
 /// Returns a [`PagingModeResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_paging_mode_request))]
 pub struct PagingModeRequest {
     header: RequestHeader<PagingModeResponse>,
     mode: u64,
@@ -71,6 +59,7 @@ impl PagingModeRequest {
 /// Returned by [`PagingModeRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_paging_mode_response))]
 pub struct PagingModeResponse {
     revision: u64,
     mode: u64,
@@ -80,11 +69,24 @@ unsafe impl Send for PagingModeResponse {}
 unsafe impl Sync for PagingModeResponse {}
 
 impl PagingModeResponse {
-    pub fn mode(&self) -> Option<PagingMode> {
+    pub const fn mode(&self) -> Option<PagingMode> {
         match self.mode {
             0 => Some(PagingMode::X86_64_4LVL),
             1 => Some(PagingMode::X86_64_5LVL),
             _ => None,
         }
     }
+}
+
+#[repr(u64)]
+#[derive(Debug, Clone, Copy)]
+pub enum PagingMode {
+    X86_64_4LVL = 0,
+    X86_64_5LVL = 1,
+}
+
+impl PagingMode {
+    pub const DEFAULT: Self = Self::X86_64_4LVL;
+    pub const MIN: Self = Self::X86_64_4LVL;
+    pub const MAX: Self = Self::X86_64_5LVL;
 }

@@ -3,6 +3,7 @@ use core::ffi::c_void;
 
 /// Returns a [`RsdpResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_rsdp_request))]
 pub struct RsdpRequest {
     header: RequestHeader<RsdpResponse>,
 }
@@ -25,10 +26,17 @@ impl RsdpRequest {
 /// Returned by [`RsdpRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_rsdp_response))]
 pub struct RsdpResponse {
     revision: u64,
-    pub address: *mut c_void,
+    address: *const c_void,
 }
 
 unsafe impl Send for RsdpResponse {}
 unsafe impl Sync for RsdpResponse {}
+
+impl RsdpResponse {
+    pub const fn address(&self) -> *const u8 {
+        self.address.cast()
+    }
+}

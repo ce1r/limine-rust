@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`HhdmResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_hhdm_request))]
 pub struct HhdmRequest {
     header: RequestHeader<HhdmResponse>,
 }
@@ -24,6 +25,7 @@ impl HhdmRequest {
 /// Returned by [`HhdmRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_hhdm_response))]
 pub struct HhdmResponse {
     revision: u64,
     pub offset: u64,

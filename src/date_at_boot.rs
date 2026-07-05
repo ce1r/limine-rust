@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`DateAtBootResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_date_at_boot_request))]
 pub struct DateAtBootRequest {
     header: RequestHeader<DateAtBootResponse>,
 }
@@ -24,6 +25,7 @@ impl DateAtBootRequest {
 /// Returned by [`DateAtBootRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_date_at_boot_response))]
 pub struct DateAtBootResponse {
     revision: u64,
     timestamp: i64,

@@ -3,6 +3,7 @@ use core::ffi::c_void;
 
 /// Returns a [`FlantermParamsResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_flanterm_fb_init_params_request))]
 pub struct FlantermParamsRequest {
     header: RequestHeader<FlantermParamsResponse>,
 }
@@ -25,6 +26,10 @@ impl FlantermParamsRequest {
 /// Returned by [`FlantermParamsRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(
+    test,
+    limine_test::test_layout(limine_flanterm_fb_init_params_response)
+)]
 pub struct FlantermParamsResponse {
     revision: u64,
     entry_count: u64,
@@ -36,6 +41,7 @@ unsafe impl Sync for FlantermParamsResponse {}
 
 #[repr(C)]
 #[derive(Debug, Clone, Copy)]
+#[cfg_attr(test, limine_test::test_layout(limine_flanterm_fb_init_params))]
 pub struct ParamEntry {
     pub canvas: *const u32,
     pub canvas_size: u64,
@@ -55,17 +61,8 @@ pub struct ParamEntry {
     pub rotation: u64,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Rotation {
-    Deg0,
-    Deg90,
-    Deg180,
-    Deg270,
-    Unknown,
-}
-
 impl ParamEntry {
-    pub fn rotation(&self) -> Rotation {
+    pub const fn rotation(&self) -> Rotation {
         match self.rotation {
             0 => Rotation::Deg0,
             1 => Rotation::Deg90,
@@ -74,4 +71,13 @@ impl ParamEntry {
             _ => Rotation::Unknown,
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum Rotation {
+    Deg0,
+    Deg90,
+    Deg180,
+    Deg270,
+    Unknown,
 }

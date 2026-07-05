@@ -4,6 +4,7 @@ use core::ffi::c_char;
 
 /// Returns a [`ExecutableCmdlineResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_cmdline_request))]
 pub struct ExecutableCmdlineRequest {
     header: RequestHeader<ExecutableCmdlineResponse>,
 }
@@ -26,6 +27,7 @@ impl ExecutableCmdlineRequest {
 /// Returned by [`ExecutableCmdlineRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_cmdline_response))]
 pub struct ExecutableCmdlineResponse {
     revision: u64,
     cmdline: *const c_char,

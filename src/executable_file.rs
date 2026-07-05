@@ -3,6 +3,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`ExecutableFileResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_file_request))]
 pub struct ExecutableFileRequest {
     header: RequestHeader<ExecutableFileResponse>,
 }
@@ -25,6 +26,7 @@ impl ExecutableFileRequest {
 /// Returned by [`ExecutableFileRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_file_response))]
 pub struct ExecutableFileResponse {
     revision: u64,
     executable_file: *const File,
@@ -34,7 +36,7 @@ unsafe impl Send for ExecutableFileResponse {}
 unsafe impl Sync for ExecutableFileResponse {}
 
 impl ExecutableFileResponse {
-    pub fn executable_file(&self) -> &File {
+    pub const fn executable_file(&self) -> &File {
         unsafe { &*self.executable_file }
     }
 }

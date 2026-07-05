@@ -4,6 +4,7 @@ use core::ffi::c_char;
 
 /// Returns a [`BootloaderInfoResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_bootloader_info_request))]
 pub struct BootloaderInfoRequest {
     header: RequestHeader<BootloaderInfoResponse>,
 }
@@ -26,6 +27,7 @@ impl BootloaderInfoRequest {
 /// Returned by [`BootloaderInfoRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_bootloader_info_response))]
 pub struct BootloaderInfoResponse {
     revision: u64,
     name: *const c_char,

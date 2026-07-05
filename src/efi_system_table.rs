@@ -3,6 +3,7 @@ use core::ffi::c_void;
 
 /// Returns a [`EfiSystemTableResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_efi_system_table_request))]
 pub struct EfiSystemTableRequest {
     header: RequestHeader<EfiSystemTableResponse>,
 }
@@ -25,10 +26,17 @@ impl EfiSystemTableRequest {
 /// Returned by [`EfiSystemTableRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_efi_system_table_response))]
 pub struct EfiSystemTableResponse {
     revision: u64,
-    pub address: *const c_void,
+    address: *const c_void,
 }
 
 unsafe impl Send for EfiSystemTableResponse {}
 unsafe impl Sync for EfiSystemTableResponse {}
+
+impl EfiSystemTableResponse {
+    pub const fn address(&self) -> *const u8 {
+        self.address.cast()
+    }
+}

@@ -2,6 +2,7 @@ use crate::request::RequestHeader;
 
 /// Returns a [`ExecutableAddressResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_address_request))]
 pub struct ExecutableAddressRequest {
     header: RequestHeader<ExecutableAddressResponse>,
 }
@@ -24,6 +25,7 @@ impl ExecutableAddressRequest {
 /// Returned by [`ExecutableAddressRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_executable_address_response))]
 pub struct ExecutableAddressResponse {
     revision: u64,
     physical_base: u64,

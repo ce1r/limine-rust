@@ -40,6 +40,7 @@ pub fn test_layout(attr: TokenStream, item: TokenStream) -> TokenStream {
 
         #[cfg(test)]
         #[test]
+        #[allow(non_snake_case)]
         fn #test_name() {
             use super::*;
 

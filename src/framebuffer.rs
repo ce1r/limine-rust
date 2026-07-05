@@ -3,6 +3,7 @@ use core::ffi::c_void;
 
 /// Returns a [`FramebufferResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_framebuffer_request))]
 pub struct FramebufferRequest {
     header: RequestHeader<FramebufferResponse>,
 }
@@ -25,6 +26,7 @@ impl FramebufferRequest {
 /// Returned by [`FramebufferRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_framebuffer_response))]
 pub struct FramebufferResponse {
     revision: u64,
     framebuffer_count: u64,
@@ -35,7 +37,7 @@ unsafe impl Send for FramebufferResponse {}
 unsafe impl Sync for FramebufferResponse {}
 
 impl FramebufferResponse {
-    pub fn framebuffers(&self) -> &[&Framebuffer] {
+    pub const fn framebuffers(&self) -> &[&Framebuffer] {
         unsafe {
             core::slice::from_raw_parts(
                 self.framebuffers.cast::<&Framebuffer>(),
@@ -45,14 +47,9 @@ impl FramebufferResponse {
     }
 }
 
-#[derive(Debug)]
-pub enum MemoryModel {
-    RGB,
-    Unknown,
-}
-
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_framebuffer))]
 pub struct Framebuffer {
     address: *mut c_void,
     pub width: u64,
@@ -66,44 +63,45 @@ pub struct Framebuffer {
     pub green_mask_shift: u8,
     pub blue_mask_size: u8,
     pub blue_mask_shift: u8,
-    _reserved: [u8; 7],
+    unused: [u8; 7],
     edid_size: u64,
-    edid: *mut c_void,
+    edid: *const c_void,
     mode_count: u64,
     modes: *const *const VideoMode,
 }
 
 impl Framebuffer {
-    pub fn modes(&self) -> &[&VideoMode] {
+    pub const fn modes(&self) -> &[&VideoMode] {
         unsafe { core::slice::from_raw_parts(self.modes.cast(), self.mode_count as usize) }
     }
 
-    pub fn size(&self) -> usize {
+    pub const fn size(&self) -> usize {
         (self.height * self.pitch) as usize
     }
 
-    pub fn memory_model(&self) -> MemoryModel {
+    pub const fn memory_model(&self) -> MemoryModel {
         match self.memory_model {
-            1 => MemoryModel::RGB,
+            1 => MemoryModel::Rgb,
             _ => MemoryModel::Unknown,
         }
     }
 
-    pub fn edid(&self) -> &[u8] {
+    pub const fn edid(&self) -> &[u8] {
         unsafe { core::slice::from_raw_parts(self.edid.cast(), self.edid_size as usize) }
     }
 
-    pub fn as_slice(&self) -> &[u8] {
+    pub const fn as_slice(&self) -> &[u8] {
         unsafe { core::slice::from_raw_parts(self.address.cast(), self.size()) }
     }
 
-    pub fn as_slice_mut(&mut self) -> &mut [u8] {
+    pub const fn as_slice_mut(&mut self) -> &mut [u8] {
         unsafe { core::slice::from_raw_parts_mut(self.address.cast(), self.size()) }
     }
 }
 
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_video_mode))]
 pub struct VideoMode {
     pub pitch: u64,
     pub width: u64,
@@ -116,4 +114,10 @@ pub struct VideoMode {
     pub green_mask_shift: u8,
     pub blue_mask_size: u8,
     pub blue_mask_shift: u8,
+}
+
+#[derive(Debug)]
+pub enum MemoryModel {
+    Rgb,
+    Unknown,
 }

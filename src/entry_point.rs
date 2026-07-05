@@ -4,6 +4,7 @@ type EntryPoint = extern "C" fn() -> !;
 
 /// Returns a [`EntryPointResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_entry_point_request))]
 pub struct EntryPointRequest {
     header: RequestHeader<EntryPointResponse>,
     entry: EntryPoint,
@@ -28,6 +29,7 @@ impl EntryPointRequest {
 /// Returned by [`EntryPointRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_entry_point_response))]
 pub struct EntryPointResponse {
     revision: u64,
 }

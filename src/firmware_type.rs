@@ -1,16 +1,8 @@
 use crate::request::RequestHeader;
 
-#[derive(Debug)]
-pub enum FirmwareType {
-    X86BIOS,
-    EFI32,
-    EFI64,
-    SBI,
-    Unknown,
-}
-
 /// Returns a [`FirmwareTypeResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_firmware_type_request))]
 pub struct FirmwareTypeRequest {
     header: RequestHeader<FirmwareTypeResponse>,
 }
@@ -33,6 +25,7 @@ impl FirmwareTypeRequest {
 /// Returned by [`FirmwareTypeRequest`].
 #[derive(Debug)]
 #[repr(C)]
+#[cfg_attr(test, limine_test::test_layout(limine_firmware_type_response))]
 pub struct FirmwareTypeResponse {
     revision: u64,
     firmware_type: u64,
@@ -42,7 +35,7 @@ unsafe impl Send for FirmwareTypeResponse {}
 unsafe impl Sync for FirmwareTypeResponse {}
 
 impl FirmwareTypeResponse {
-    pub fn firmware_type(&self) -> FirmwareType {
+    pub const fn firmware_type(&self) -> FirmwareType {
         match self.firmware_type {
             0 => FirmwareType::X86BIOS,
             1 => FirmwareType::EFI32,
@@ -51,4 +44,13 @@ impl FirmwareTypeResponse {
             _ => FirmwareType::Unknown,
         }
     }
+}
+
+#[derive(Debug)]
+pub enum FirmwareType {
+    X86BIOS,
+    EFI32,
+    EFI64,
+    SBI,
+    Unknown,
 }

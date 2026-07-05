@@ -3,6 +3,7 @@ use core::ffi::c_void;
 
 /// Returns a [`EfiMemoryMapResponse`].
 #[repr(C, align(8))]
+#[cfg_attr(test, limine_test::test_layout(limine_efi_memmap_request))]
 pub struct EfiMemoryMapRequest {
     header: RequestHeader<EfiMemoryMapResponse>,
 }
@@ -25,12 +26,13 @@ impl EfiMemoryMapRequest {
 /// Returned by [`EfiMemoryMapRequest`].
 #[repr(C)]
 #[derive(Debug)]
+#[cfg_attr(test, limine_test::test_layout(limine_efi_memmap_response))]
 pub struct EfiMemoryMapResponse {
     revision: u64,
-    memory_map: *const c_void,
-    memory_map_size: u64,
-    descriptor_size: u64,
-    descriptor_version: u64,
+    memmap: *const c_void,
+    memmap_size: u64,
+    desc_size: u64,
+    desc_version: u64,
 }
 
 unsafe impl Send for EfiMemoryMapResponse {}
