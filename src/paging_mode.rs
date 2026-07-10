@@ -70,23 +70,84 @@ unsafe impl Sync for PagingModeResponse {}
 
 impl PagingModeResponse {
     pub const fn mode(&self) -> Option<PagingMode> {
-        match self.mode {
-            0 => Some(PagingMode::X86_64_4LVL),
-            1 => Some(PagingMode::X86_64_5LVL),
-            _ => None,
-        }
+        PagingMode::from_raw(self.mode)
     }
 }
 
-#[repr(u64)]
 #[derive(Debug, Clone, Copy)]
 pub enum PagingMode {
-    X86_64_4LVL = 0,
-    X86_64_5LVL = 1,
+    #[cfg(any(
+        target_arch = "x86_64",
+        target_arch = "aarch64",
+        target_arch = "loongarch64",
+    ))]
+    FourLevel,
+
+    #[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
+    FiveLevel,
+
+    #[cfg(target_arch = "riscv64")]
+    Sv39,
+
+    #[cfg(target_arch = "riscv64")]
+    Sv48,
+
+    #[cfg(target_arch = "riscv64")]
+    Sv57,
 }
 
 impl PagingMode {
-    pub const DEFAULT: Self = Self::X86_64_4LVL;
-    pub const MIN: Self = Self::X86_64_4LVL;
-    pub const MAX: Self = Self::X86_64_5LVL;
+    #[cfg(any(
+        target_arch = "x86_64",
+        target_arch = "aarch64",
+        target_arch = "loongarch64"
+    ))]
+    pub const DEFAULT: Self = Self::FourLevel;
+
+    #[cfg(any(
+        target_arch = "x86_64",
+        target_arch = "aarch64",
+        target_arch = "loongarch64"
+    ))]
+    pub const MIN: Self = Self::FourLevel;
+
+    #[cfg(any(target_arch = "x86_64", target_arch = "aarch64"))]
+    pub const MAX: Self = Self::FiveLevel;
+
+    #[cfg(target_arch = "loongarch64")]
+    pub const MAX: Self = Self::FourLevel;
+
+    #[cfg(target_arch = "riscv64")]
+    pub const DEFAULT: Self = Self::Sv48;
+
+    #[cfg(target_arch = "riscv64")]
+    pub const MIN: Self = Self::Sv39;
+
+    #[cfg(target_arch = "riscv64")]
+    pub const MAX: Self = Self::Sv57;
+
+    pub const fn from_raw(value: u64) -> Option<Self> {
+        #[cfg(any(
+            target_arch = "x86_64",
+            target_arch = "aarch64",
+            target_arch = "loongarch64"
+        ))]
+        {
+            match value {
+                0 => Some(Self::FourLevel),
+                1 => Some(Self::FiveLevel),
+                _ => None,
+            }
+        }
+
+        #[cfg(target_arch = "riscv64")]
+        {
+            match value {
+                0 => Some(Self::Sv39),
+                1 => Some(Self::Sv48),
+                2 => Some(Self::Sv57),
+                _ => None,
+            }
+        }
+    }
 }

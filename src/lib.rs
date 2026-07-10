@@ -1,11 +1,20 @@
 #![no_std]
-#![cfg(target_arch = "x86_64")]
+#![cfg(any(
+    target_arch = "x86_64",
+    target_arch = "aarch64",
+    target_arch = "riscv64",
+    target_arch = "loongarch64"
+))]
 
 use core::cell::UnsafeCell;
 use core::ptr::null_mut;
 
 mod bootloader_info;
 mod bootloader_performance;
+
+#[cfg(target_arch = "riscv64")]
+mod bsp_hartid;
+
 mod date_at_boot;
 mod efi_memory_map;
 mod efi_system_table;
@@ -18,7 +27,10 @@ mod firmware_type;
 mod flanterm;
 mod framebuffer;
 mod hhdm;
+
+#[cfg(target_arch = "x86_64")]
 mod keep_iommu;
+
 mod memory_map;
 mod module;
 mod mp;
@@ -31,6 +43,10 @@ mod tsc_frequency;
 pub mod request {
     pub use crate::bootloader_info::BootloaderInfoRequest;
     pub use crate::bootloader_performance::BootloaderPerformanceRequest;
+
+    #[cfg(target_arch = "riscv64")]
+    pub use crate::bsp_hartid::BspHartidRequest;
+
     pub use crate::date_at_boot::DateAtBootRequest;
     pub use crate::efi_memory_map::EfiMemoryMapRequest;
     pub use crate::efi_system_table::EfiSystemTableRequest;
@@ -42,7 +58,10 @@ pub mod request {
     pub use crate::flanterm::FlantermParamsRequest;
     pub use crate::framebuffer::FramebufferRequest;
     pub use crate::hhdm::HhdmRequest;
+
+    #[cfg(target_arch = "x86_64")]
     pub use crate::keep_iommu::KeepIommuRequest;
+
     pub use crate::memory_map::MemoryMapRequest;
     pub use crate::module::ModuleRequest;
     pub use crate::mp::MpRequest;
@@ -56,6 +75,10 @@ pub mod request {
 pub mod response {
     pub use crate::bootloader_info::BootloaderInfoResponse;
     pub use crate::bootloader_performance::BootloaderPerformanceResponse;
+
+    #[cfg(target_arch = "riscv64")]
+    pub use crate::bsp_hartid::BspHartidResponse;
+
     pub use crate::date_at_boot::DateAtBootResponse;
     pub use crate::efi_memory_map::EfiMemoryMapResponse;
     pub use crate::efi_system_table::EfiSystemTableResponse;
@@ -67,7 +90,10 @@ pub mod response {
     pub use crate::flanterm::FlantermParamsResponse;
     pub use crate::framebuffer::FramebufferResponse;
     pub use crate::hhdm::HhdmResponse;
+
+    #[cfg(target_arch = "x86_64")]
     pub use crate::keep_iommu::KeepIommuResponse;
+
     pub use crate::memory_map::MemoryMapResponse;
     pub use crate::module::ModuleResponse;
     pub use crate::mp::MpResponse;
