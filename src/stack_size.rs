@@ -1,4 +1,4 @@
-use crate::request::RequestHeader;
+use crate::RequestHeader;
 
 /// Returns a [`StackSizeResponse`].
 #[repr(C, align(8))]

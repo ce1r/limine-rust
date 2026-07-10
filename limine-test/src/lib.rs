@@ -28,8 +28,13 @@ pub fn test_layout(attr: TokenStream, item: TokenStream) -> TokenStream {
                 );
 
                 assert_eq!(
-                    crate::field_size!(#rust_type, #field),
-                    crate::field_size!(crate::bindings::#c_type, #field),
+                    crate::size_of_field!(#rust_type, #field),
+                    crate::size_of_field!(crate::bindings::#c_type, #field),
+                    "Size of Rust {}.{} does not match size of C {}.{}",
+                    stringify!(#rust_type),
+                    stringify!(#field),
+                    stringify!(#c_type),
+                    stringify!(#field),
                 );
             }
         })
@@ -47,11 +52,17 @@ pub fn test_layout(attr: TokenStream, item: TokenStream) -> TokenStream {
             assert_eq!(
                 core::mem::size_of::<#rust_type>(),
                 core::mem::size_of::<crate::bindings::#c_type>(),
+                "Size of Rust {} does not match size of C {}",
+                stringify!(#rust_type),
+                stringify!(#c_type),
             );
 
             assert_eq!(
                 core::mem::align_of::<#rust_type>(),
                 core::mem::align_of::<crate::bindings::#c_type>(),
+                "Alignment of Rust {} does not match alignment of C {}",
+                stringify!(#rust_type),
+                stringify!(#c_type),
             );
 
             #(#field_checks)*

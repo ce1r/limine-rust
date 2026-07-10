@@ -1,4 +1,4 @@
-use crate::request::RequestHeader;
+use crate::RequestHeader;
 
 type EntryPoint = extern "C" fn() -> !;
 

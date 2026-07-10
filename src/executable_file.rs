@@ -1,5 +1,5 @@
 use crate::file::File;
-use crate::request::RequestHeader;
+use crate::RequestHeader;
 
 /// Returns a [`ExecutableFileResponse`].
 #[repr(C, align(8))]

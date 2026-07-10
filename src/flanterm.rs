@@ -1,4 +1,4 @@
-use crate::request::RequestHeader;
+use crate::RequestHeader;
 use core::ffi::c_void;
 
 /// Returns a [`FlantermParamsResponse`].
