@@ -25,6 +25,11 @@ pub fn test_layout(attr: TokenStream, item: TokenStream) -> TokenStream {
                 assert_eq!(
                     core::mem::offset_of!(#rust_type, #field),
                     core::mem::offset_of!(crate::bindings::#c_type, #field),
+                    "Alignment of Rust {}.{} does not match alignment of C {}.{}",
+                    stringify!(#rust_type),
+                    stringify!(#field),
+                    stringify!(#c_type),
+                    stringify!(#field),
                 );
 
                 assert_eq!(

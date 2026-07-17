@@ -38,6 +38,7 @@ mod paging_mode;
 mod rsdp;
 mod smbios;
 mod stack_size;
+mod tpm;
 mod tsc_frequency;
 
 pub mod request {
@@ -69,6 +70,7 @@ pub mod request {
     pub use crate::rsdp::RsdpRequest;
     pub use crate::smbios::SmbiosRequest;
     pub use crate::stack_size::StackSizeRequest;
+    pub use crate::tpm::TpmEventLogRequest;
     pub use crate::tsc_frequency::TscFrequencyRequest;
 }
 
@@ -101,6 +103,7 @@ pub mod response {
     pub use crate::rsdp::RsdpResponse;
     pub use crate::smbios::SmbiosResponse;
     pub use crate::stack_size::StackSizeResponse;
+    pub use crate::tpm::TpmEventLogResponse;
     pub use crate::tsc_frequency::TscFrequencyResponse;
 }
 

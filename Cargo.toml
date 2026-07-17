@@ -14,7 +14,7 @@ members = ["limine-test"]
 test = ["dep:bindgen"]
 
 [build-dependencies]
-bindgen = { version = "0.72.1", optional = true }
+bindgen = { version = "0.72.1", optional = true, default-features = false }
 
 [dev-dependencies]
 limine-rust = { path = ".", features = ["test"] }
