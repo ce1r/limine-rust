@@ -16,6 +16,7 @@ mod bootloader_performance;
 mod bsp_hartid;
 
 mod date_at_boot;
+mod dtb;
 mod efi_memory_map;
 mod efi_system_table;
 mod entry_point;
@@ -49,6 +50,7 @@ pub mod request {
     pub use crate::bsp_hartid::BspHartidRequest;
 
     pub use crate::date_at_boot::DateAtBootRequest;
+    pub use crate::dtb::DtbRequest;
     pub use crate::efi_memory_map::EfiMemoryMapRequest;
     pub use crate::efi_system_table::EfiSystemTableRequest;
     pub use crate::entry_point::EntryPointRequest;
@@ -82,6 +84,7 @@ pub mod response {
     pub use crate::bsp_hartid::BspHartidResponse;
 
     pub use crate::date_at_boot::DateAtBootResponse;
+    pub use crate::dtb::DtbResponse;
     pub use crate::efi_memory_map::EfiMemoryMapResponse;
     pub use crate::efi_system_table::EfiSystemTableResponse;
     pub use crate::entry_point::EntryPointResponse;
